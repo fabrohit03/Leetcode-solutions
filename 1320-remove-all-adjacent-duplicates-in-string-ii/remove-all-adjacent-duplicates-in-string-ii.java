@@ -8,32 +8,34 @@ class Pair{
 }
 class Solution {
     public String removeDuplicates(String s, int k) {
-        int n = s.length();
-        Stack <Pair> st=new Stack<>();
-        for(int i=0;i<n;i++){
-            char curr =s.charAt(i);
-            if(st.isEmpty()){
-                st.push(new Pair(curr,1));
-                continue;
-            }
-            if(st.peek().first!=curr){
-                st.push(new Pair(curr,1));
-                continue;
-            }
-            if(st.peek().second<k-1){
-                Pair p=st.pop();
-                st.push(new Pair(p.first,p.second+1));
-                continue;
-            }
-            st.pop();
+    int n=s.length();
+    Stack<Pair> st=new Stack <>();
+    for(int i=0;i<n;i++){
+        char curr=s.charAt(i);
+        if(st.isEmpty()){
+            st.push(new Pair (curr,1));
+            continue;
         }
-        StringBuilder res=new StringBuilder();
-        while(!st.isEmpty()){
+        if(st.peek().first!=curr){
+            st.push(new Pair(curr,1));
+            continue;
+        }
+        if(st.peek().second<k-1){
             Pair p=st.pop();
-            while(p.second-- >0){
-                res.append(p.first);
-            }
+            st.push(new Pair (p.first,p.second+1));
+            continue;
         }
-        return res.reverse().toString();
+        st.pop();
+
+    }
+    StringBuilder res = new StringBuilder();
+    while(!st.isEmpty()){
+        Pair p=st.pop();
+        while(p.second-- >0){
+            res.append(p.first);
+
+        }
+    }
+    return res.reverse().toString();
     }
 }
