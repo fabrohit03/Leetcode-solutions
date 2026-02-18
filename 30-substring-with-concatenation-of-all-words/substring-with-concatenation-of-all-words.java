@@ -1,46 +1,50 @@
 class Solution {
     public List<Integer> findSubstring(String s, String[] words) {
-        List<Integer> res = new ArrayList<>();
+        List<Integer> ans = new ArrayList<>();
 
-        int wordLen = words[0].length();
-        int wordCount = words.length;
-        int totalLen = wordLen * wordCount;
-
-        HashMap<String, Integer> wordMap = new HashMap<>();
-        for (String w : words) {
-            wordMap.put(w, wordMap.getOrDefault(w, 0) + 1);
+        if (words.length == 0 || s.length() == 0) {
+            return ans;
         }
 
-        // key fix: start from 0..wordLen-1
-        for (int start = 0; start < wordLen; start++) {
-            HashMap<String, Integer> seen = new HashMap<>();
-            int left = start, count = 0;
+        int wordSize = words[0].length();
+        int wordCount = words.length;
+        int N = s.length();
 
-            for (int right = start; right + wordLen <= s.length(); right += wordLen) {
-                String word = s.substring(right, right + wordLen);
+        HashMap<String,Integer> originalCount = new HashMap<>();
+        for(int i = 0; i<words.length; i++){
+            originalCount.put(words[i], originalCount.getOrDefault(words[i],0)+1);
+        }
 
-                if (wordMap.containsKey(word)) {
-                    seen.put(word, seen.getOrDefault(word, 0) + 1);
+        for(int offset = 0; offset<wordSize; offset++){
+            HashMap<String,Integer> currentCount = new HashMap<>();
+            int start = offset;
+            int count = 0;
+            for(int end = offset; end + wordSize <= N; end += wordSize){
+                String currWord = s.substring(end, end + wordSize);
+                if(originalCount.containsKey(currWord)){
+                    currentCount.put(currWord, currentCount.getOrDefault(currWord,0)+1);
                     count++;
 
-                    // shrink window if word is extra
-                    while (seen.get(word) > wordMap.get(word)) {
-                        String leftWord = s.substring(left, left + wordLen);
-                        seen.put(leftWord, seen.get(leftWord) - 1);
-                        count--;
-                        left += wordLen;
+                    while(currentCount.get(currWord)>originalCount.get(currWord)){
+                        String startWord = s.substring(start,start+wordSize);
+                        currentCount.put(startWord, currentCount.get(startWord)-1);
+                        start+=wordSize;
+                        count--;                        
                     }
 
-                    if (count == wordCount) {
-                        res.add(left);
+                    if(count == wordCount){
+                        ans.add(start);
                     }
-                } else {
-                    seen.clear();
+                    
+                }
+                else{
                     count = 0;
-                    left = right + wordLen;
+                    start = end + wordSize;
+                    currentCount.clear();
                 }
             }
+
         }
-        return res;
+        return ans;
     }
 }
