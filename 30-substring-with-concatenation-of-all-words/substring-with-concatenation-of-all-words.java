@@ -1,49 +1,33 @@
 class Solution {
     public List<Integer> findSubstring(String s, String[] words) {
         List<Integer> ans = new ArrayList<>();
-
-        if (words.length == 0 || s.length() == 0) {
-            return ans;
+        int n=s.length();
+        int m=words.length;
+        int w=words[0].length();
+        
+        HashMap<String,Integer> map=new HashMap<>();
+        for(String x:words){
+            map.put(x,map.getOrDefault(x,0)+1);
         }
 
-        int wordSize = words[0].length();
-        int wordCount = words.length;
-        int N = s.length();
-
-        HashMap<String,Integer> originalCount = new HashMap<>();
-        for(int i = 0; i<words.length; i++){
-            originalCount.put(words[i], originalCount.getOrDefault(words[i],0)+1);
-        }
-
-        for(int offset = 0; offset<wordSize; offset++){
-            HashMap<String,Integer> currentCount = new HashMap<>();
-            int start = offset;
-            int count = 0;
-            for(int end = offset; end + wordSize <= N; end += wordSize){
-                String currWord = s.substring(end, end + wordSize);
-                if(originalCount.containsKey(currWord)){
-                    currentCount.put(currWord, currentCount.getOrDefault(currWord,0)+1);
-                    count++;
-
-                    while(currentCount.get(currWord)>originalCount.get(currWord)){
-                        String startWord = s.substring(start,start+wordSize);
-                        currentCount.put(startWord, currentCount.get(startWord)-1);
-                        start+=wordSize;
-                        count--;                        
+        for(int i=0;i<w;i++){
+            HashMap<String,Integer> temp=new HashMap<>();
+            int count =0;
+            int k=i;
+            for(int j=i;j+w<=n;j=j+w){
+                String str= s.substring(j,j+w);
+                temp.put(str,temp.getOrDefault(str,0)+1);
+                count++;
+                if(count==m){
+                    if(map.equals(temp)){
+                        ans.add(k);
                     }
-
-                    if(count == wordCount){
-                        ans.add(start);
-                    }
-                    
-                }
-                else{
-                    count = 0;
-                    start = end + wordSize;
-                    currentCount.clear();
+                   String remove = s.substring(k,k+w);
+                   temp.computeIfPresent(remove,(a,b)->(b>1) ? b-1:null);
+                   count--;
+                   k=k+w;
                 }
             }
-
         }
         return ans;
     }
