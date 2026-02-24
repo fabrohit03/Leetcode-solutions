@@ -14,7 +14,7 @@ class Solution {
         return count<=days;
     }
     public int shipWithinDays(int[] weights, int days) {
-        long low=Integer.MIN_VALUE;
+        long low=0;
         long high = 0;
         for(int w:weights){
             low=Math.max(low,w);
