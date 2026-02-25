@@ -8,7 +8,7 @@ class Solution {
         int high =n1;
         int n=n1+n2;
         while(low<=high){
-            int mid1 = (low+high);
+            int mid1 = low + (high - low) / 2;
             int mid2 = left-mid1;
             int l1 = Integer.MIN_VALUE;
             int l2 = Integer.MIN_VALUE;
