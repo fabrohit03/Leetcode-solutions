@@ -9,7 +9,7 @@ class Solution {
         if(root==null) return;
         func(root.left);
             if(prev!=null && root.val<prev.val){
-                {
+                
                     if(galat==0){
                         galat1_first=prev;
                         galat1_sec=root;
@@ -20,7 +20,7 @@ class Solution {
                         galat++;
                     }
                    
-                }
+                
             }
             prev=root;
             func(root.right);
