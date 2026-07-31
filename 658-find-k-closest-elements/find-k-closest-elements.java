@@ -1,36 +1,35 @@
-class Solution {
+class Pair{
+    int first;
+    int second;
+    Pair(int f, int s){
+        first = f;
+        second = s;
+    }
+}
+    class Solution {
     public List<Integer> findClosestElements(int[] arr, int k, int x) {
-        int low = 0, high = arr.length - 1;
-
-     
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            if (arr[mid] < x) low = mid + 1;
-            else high = mid - 1;
-        }
-
-        int left = high;
-        int right = low;
-
-        while (right - left - 1 < k) {
-            if (left < 0) {
-                right++;              
-            } 
-            else if (right >= arr.length) {
-                left--;                 
-            } 
-            else if (Math.abs(arr[left] - x) <= Math.abs(arr[right] - x)) {
-                left--;                
-            } 
-            else {
-                right++;               
+        PriorityQueue<Pair>pq = new PriorityQueue<>((a,b)->{
+            if(a.second!=b.second){
+                return b.second-a.second;
+            }
+            return b.first-a.first;
+        });
+        for(int i=0; i<arr.length; i++){
+            if(pq.size()<k){
+                pq.add(new Pair(arr[i],Math.abs(arr[i]-x)));
+            }else{
+                if(pq.peek().second>Math.abs(arr[i]-x)){
+                    pq.poll();
+                    pq.add(new Pair(arr[i],Math.abs(arr[i]-x)));
+                }
             }
         }
-
-        List<Integer> list = new ArrayList<>();
-        for (int i = left + 1; i < right; i++) {
-            list.add(arr[i]);
+        List<Integer> res = new ArrayList<>();
+        while(!pq.isEmpty()){
+            res.add(pq.poll().first);
+            
         }
-        return list;
+        Collections.sort(res);
+        return res;
     }
 }
