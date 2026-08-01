@@ -1,31 +1,32 @@
+class Pair{
+    int first,second;
+    Pair(int f, int s){
+        first=f;
+        second=s;
+    }
+}
 class Solution {
     public int[] kWeakestRows(int[][] mat, int k) {
-        int m=mat.length;
-
-        int [][] arr=new int [m][2];
-
-        for(int i=0;i<m;i++){
-            int count=0;
-            for(int j=0;j<mat[i].length;j++){
+        PriorityQueue<Pair>pq = new PriorityQueue<>((a,b)->{
+            if(a.first!=b.first){
+                return b.first-a.first;
+            }
+            return b.second-a.second;
+        });
+        int m = mat.length;
+        for(int i=0; i<m; i++){
+            int count = 0;
+            for(int j=0; j<mat[i].length; j++){
                 if(mat[i][j]==1) count++;
                 else break;
             }
-            arr[i][0]=count;
-            arr[i][1]=i;
+            pq.add(new Pair(count,i));
+            if(pq.size()>k) pq.poll();
         }
-
-    Arrays.sort(arr,(a,b)->{
-        if(a[0]!=b[0])
-        return a[0]-b[0];
-        return a[1]-b[1];
-    });
-
-
-    int [] ans=new int[k];
-    for(int i=0;i<k;i++){
-        ans[i]=arr[i][1];
-    }
-
-    return ans;
+        int [] res = new int[k];
+        for(int i=k-1; i>=0; i--){
+            res[i]=pq.poll().second;
+        }
+        return res;
     }
 }
