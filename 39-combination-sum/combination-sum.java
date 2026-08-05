@@ -11,7 +11,6 @@ class Solution {
             sum +=candidates[index];
             func(candidates, n,sum, target, index,res, diary);
             diary.remove(diary.size()-1);
-            return;
         }
     }
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
