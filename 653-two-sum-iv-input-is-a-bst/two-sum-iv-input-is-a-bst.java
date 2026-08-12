@@ -1,24 +1,46 @@
 class Solution {
-    List<Integer>temp = new ArrayList<>();
-
-    void func(TreeNode root){
-        if(root==null){
-            return;
+    Stack<TreeNode>asc = new Stack<>();
+    Stack<TreeNode>desc = new Stack<>();
+    TreeNode getsmall(){
+        if(asc.isEmpty()) return null;
+        TreeNode small = asc.pop();
+        TreeNode rightChild = small.right;
+        while(rightChild != null){
+            asc.push(rightChild);
+            rightChild = rightChild.left;
         }
-        func(root.left);
-        temp.add(root.val);
-        func(root.right);
+        return small;
+    }
+    TreeNode getbig(){
+        if(desc.isEmpty()) return null;
+        TreeNode big = desc.pop();
+        TreeNode leftChild = big.left;
+        while(leftChild !=null){
+            desc.push(leftChild);
+            leftChild = leftChild.right;
+        }
+        return big;
     }
     public boolean findTarget(TreeNode root, int k) {
-        func(root);
-        int i =0;
-        int j = temp.size()-1;
-        while(i<j){
-            int sum = temp.get(i)+temp.get(j);
-            if(sum==k) return true;
-            if (sum<k) i++;
-            else j--;
-        }
-        return false;
+       if(root==null) return false;
+       TreeNode t = root;
+       while(t!=null){
+        asc.push(t);
+        t=t.left;
+       }
+       t = root;
+       while(t!=null){
+        desc.push(t);
+        t=t.right;
+       }
+       TreeNode i = getsmall();
+       TreeNode j = getbig();
+       while(i!=null && j!=null && i!=j&& i.val<j.val){
+        int sum = i.val+j.val;
+        if(sum==k) return true;
+        if(sum>k) j=getbig();
+        else i = getsmall();
+       }
+       return false;
     }
 }
