@@ -1,6 +1,6 @@
 class Solution {
-    int res=0;
-    private int func(TreeNode root){
+    int res =0;
+    int func(TreeNode root){
         if(root==null) return 0;
         int left = func(root.left);
         int right = func(root.right);
