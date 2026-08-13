@@ -1,27 +1,25 @@
 class Solution {
-
     private boolean isComplete(TreeNode root){
         if(root==null) return true;
-        boolean nullFound = false;
-        Queue<TreeNode> q = new LinkedList<>();
+        boolean isFound = false;
+        Queue<TreeNode>q = new LinkedList<>();
         q.add(root);
         while(!q.isEmpty()){
             TreeNode t = q.peek();
             q.remove();
-            if(t==null) nullFound = true;
+            if(t==null) isFound = true;
             else{
-                if(nullFound){
+                if(isFound){
                     return false;
                 }
-                q.add(t.left);
-                q.add(t.right);
+            q.add(t.left);
+            q.add(t.right);
             }
+            
         }
         return true;
     }
-
     public boolean isCompleteTree(TreeNode root) {
         return isComplete(root);
-
     }
 }
