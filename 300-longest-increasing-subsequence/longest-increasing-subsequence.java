@@ -1,35 +1,20 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        ArrayList<Integer>res = new ArrayList<>();
-        res.add(nums[0]);
-        for(int i =1; i<nums.length; i++){
-            if(nums[i]>res.get(res.size()-1)){
-                res.add(nums[i]);
-            }else{
-                int j = binarySearch(res,nums[i]);
-                res.set(j,nums[i]);
-            }
+        int n = nums.length;
+        int[][] dp = new int[n][n+1];
+        for(int i=0;i<n;i++){
+            Arrays.fill(dp[i],-1);
         }
-        return res.size();
+        return func(nums,n,0,-1,dp);
     }
-
-private int binarySearch(ArrayList<Integer>res, int num){
-    int left =0;
-    int right = res.size()-1;
-
-    while(left<right){
-        int mid = (left+right)/2;
-        if(res.get(mid)==num){
-            return mid;
+    private int func(int[] arr , int n, int i, int prev, int[][] dp){
+        if(i==n) return 0;
+        if(dp[i][prev+1]!=-1) return dp[i][prev+1];
+        if(prev==-1 || arr[i]>arr[prev]){
+            int c1 = 1+func(arr,n,i+1,i,dp);
+            int c2 = func(arr,n,i+1,prev,dp);
+            return dp[i][prev+1]=Math.max(c1,c2);
         }
-        if(res.get(mid)<num){
-            left = mid+1;
-        }else{
-            right = mid;
-        }
-
+        return dp[i][prev+1] = func(arr,n,i+1,prev,dp);
     }
-    return left;
 }
-}
-
