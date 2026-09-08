@@ -1,26 +1,15 @@
 class Solution {
     public int maxProfit(int[] prices) {
       int n = prices.length;
-      int[][] dp = new int[n][5];
-      for(int[] rows : dp){
-        Arrays.fill(rows,-1);
-      }  
-      int k =4;
-      return func(prices,n,0,k,dp);
-    }
-    private int func(int[] prices, int n, int i, int k, int[][] dp){
-        if(i == n ) return 0;
-        if(k==0) return 0;
-        if(dp[i][k]!=-1) return dp[i][k];
-        if(k%2==0) {
-            int c1 = func(prices,n,i+1,k-1,dp)-prices[i];
-            int c2 = func(prices,n,i+1,k,dp);
-             return dp[i][k] = Math.max(c1,c2);
-        }else{
-            int c1 = func(prices,n,i+1,k-1,dp)+prices[i];
-            int c2 = func(prices,n,i+1,k,dp);
-            return dp[i][k] = Math.max(c1,c2);
+      int[][] dp = new int[n+1][5];
+      for(int i=n-1; i>=0; i--){
+        for(int k=1; k<=4; k++){
+        if(k%2==0){
+            dp[i][k] = Math.max(dp[i+1][k-1]-prices[i],dp[i+1][k]);
         }
-        
+        else{
+        dp[i][k] = Math.max(dp[i+1][k-1]+prices[i],dp[i+1][k]);
+      }}}
+      return dp[0][4];
     }
 }
