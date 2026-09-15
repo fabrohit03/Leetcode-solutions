@@ -1,12 +1,11 @@
 class Solution {
     public int singleNumber(int[] nums) {
-        HashMap<Integer,Integer>map = new HashMap<>();
+        int ones = 0;
+        int twos = 0;
         for(int i=0; i<nums.length; i++){
-            map.put(nums[i],map.getOrDefault(nums[i],0)+1);
+            ones = (ones^nums[i]) & ~twos;
+            twos = (twos^nums[i]) & ~ones;
         }
-        for(int num : map.keySet()){
-            if(map.get(num)==1) return num;
-        }
-        return -1;
+        return ones;
     }
 }
