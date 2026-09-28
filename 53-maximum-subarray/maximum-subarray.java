@@ -1,22 +1,20 @@
 class Solution {
     public int maxSubArray(int[] nums) {
-        int i= 1;
         int be = nums[0];
         int res = be;
-        while(i<nums.length){
-            int p = be+nums[i];
-            if(p<nums[i]){
-                be=nums[i];
+        for(int i=1; i<nums.length; i++){
+            int sum = be+nums[i];
+            if(sum<nums[i]){
+                be = nums[i];
                 if(be>res){
-                    res=be;
+                    res = be;
                 }
             }else{
-                be=p;
+                be = sum;
                 if(be>res){
-                    res=be;
+                    res = be;
                 }
             }
-            i++;
         }
         return res;
     }
