@@ -1,30 +1,30 @@
 class Solution {
     public void nextPermutation(int[] nums) {
-        int idx = -1;
-        int n = nums.length-1;
-        for(int i=n-1; i>=0; i--){
-            if(nums[i]<nums[i+1]){
-                idx = i;
-                break;
-            }
+    int index = -1;
+    int n = nums.length-1;
+    for(int i=n-1; i>=0; i--){
+        if(nums[i]<nums[i+1]){
+            index=i;
+            break;
         }
-        if(idx==-1){
-            reverse(nums,0,n);
-            return;
-        }
-        for(int i=n; i>idx; i--){
-            if(nums[i]>nums[idx]){
-                int temp = nums[i];
-                nums[i]=nums[idx];
-                nums[idx]=temp;
-                break;
-            }
-        }
-        reverse(nums, idx+1,n);
     }
-    public void reverse(int[] nums, int start, int end){
+    if(index==-1){
+        reverse(nums,0,n);
+        return;
+    }
+    for(int i=n; i>index; i--){
+        if(nums[i]>nums[index]){
+            int temp = nums[i];
+            nums[i]=nums[index];
+            nums[index]=temp;
+            break;
+        }
+    }
+    reverse(nums,index+1,n);
+    }
+    public void reverse(int[] nums,int start, int end){
         while(start<end){
-            int temp = nums[start];
+            int temp=nums[start];
             nums[start]=nums[end];
             nums[end]=temp;
             start++;
