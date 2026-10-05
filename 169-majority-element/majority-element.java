@@ -1,14 +1,14 @@
 class Solution {
     public int majorityElement(int[] nums) {
-       HashMap<Integer,Integer>freq = new HashMap<>();
-       for(int i=0; i<nums.length; i++){
-        freq.put(nums[i],freq.getOrDefault(nums[i],0)+1);
-       } 
-       for(int num:nums){
-        if(freq.get(num)>nums.length/2){
-            return num;
+      int candidate = 0;
+      int count = 0;
+      for(int i=0; i<nums.length; i++){
+        if(count==0){
+            candidate=nums[i];
         }
-       }
-       return -1;
+        if(nums[i]==candidate) count++;
+        else count--;
+      }
+      return candidate;
     }
 }
