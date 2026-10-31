@@ -1,18 +1,20 @@
 class Solution {
-    int res = 0;
-    int c = 0;
-    void inorder(TreeNode root, int k){
-        if(root==null) return ;
-        inorder(root.left, k);
-        c++;
-        if(c==k){
-            res=root.val;
-            return;
+    int ans;
+    void func(TreeNode root, int k,List<Integer>res){
+        if (root==null) return;
+        func(root.left,k,res);
+        res.add(root.val);
+        func(root.right,k,res);
+        for(int i=0; i<res.size(); i++){
+            if(i==k-1){
+                ans = res.get(i);
+            break;
+            }
         }
-        inorder(root.right, k);
     }
     public int kthSmallest(TreeNode root, int k) {
-        inorder(root,k);
-        return res;
+        List<Integer>res = new ArrayList<>();
+       func(root,k,res);
+        return ans;
     }
 }
