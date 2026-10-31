@@ -1,20 +1,19 @@
 class Solution {
-    int ans;
-    void func(TreeNode root, int k,List<Integer>res){
+    int res  = 0;
+    int count = 0;
+    void func(TreeNode root, int k){
         if (root==null) return;
-        func(root.left,k,res);
-        res.add(root.val);
-        func(root.right,k,res);
-        for(int i=0; i<res.size(); i++){
-            if(i==k-1){
-                ans = res.get(i);
-            break;
-            }
+        func(root.left,k);
+        count++;
+        if(count==k){
+            res = root.val;
+            return;
         }
+        func(root.right,k);
+        
     }
     public int kthSmallest(TreeNode root, int k) {
-        List<Integer>res = new ArrayList<>();
-       func(root,k,res);
-        return ans;
+       func(root,k);
+        return res;
     }
 }
