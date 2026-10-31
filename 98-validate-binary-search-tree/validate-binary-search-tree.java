@@ -1,22 +1,20 @@
 class Solution {
-    TreeNode prev = null;
     boolean ans = true;
-    void isValidate(TreeNode root){
+    TreeNode prev = null;
+    void func(TreeNode root){
         if(root==null) return;
-        isValidate(root.left);
-        if(prev == null){
-            prev=root;
-        }else{
+        func(root.left);
+        if(prev==null) prev=root;
+        else{
             if(root.val<=prev.val){
-                ans = false;
+                ans=false;
             }
-                prev=root;
+            prev=root;
         }
-        isValidate(root.right);
-
+        func(root.right);
     }
     public boolean isValidBST(TreeNode root) {
-        isValidate(root);
+        func(root);
         return ans;
     }
 }
