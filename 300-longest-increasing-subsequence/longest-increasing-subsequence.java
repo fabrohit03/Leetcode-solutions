@@ -1,32 +1,22 @@
 class Solution {
+    int func(int[]nums, int n,int prev,int i,int[][]dp){
+        
+        if(i==n) return 0;
+        if(dp[i][prev+1]!=-1) return dp[i][prev+1];
+        int notTake =func(nums,n,prev,i+1,dp);
+        int take =0;
+        if(prev==-1 || nums[i]>nums[prev]){
+            take = 1+func(nums,n,i,i+1,dp);
+        }
+        return dp[i][prev+1]=Math.max(take,notTake);
+    }
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
-        ArrayList<Integer>res = new ArrayList<>();
-        res.add(nums[0]);
-        for(int i=1; i<n; i++){
-            if(nums[i]>res.get(res.size()-1)){
-                res.add(nums[i]);
-            }else{
-                int j = bS(res, nums[i]);
-                res.set(j,nums[i]);
-            }
+        int prev = -1;
+        int[][]dp = new int[n][n+1];
+        for(int[] row:dp){
+            Arrays.fill(row,-1);
         }
-        return res.size();
-    }
-    private int bS(ArrayList<Integer>res,int num){
-        int left =0;
-        int right = res.size()-1;
-        while(left<right){
-            int mid = (left+right)/2;
-            if(res.get(mid)==num){
-                return mid;
-            }
-            if(res.get(mid)<num){
-                left = mid+1;
-            }else{
-                right = mid;
-            }
-        }
-        return left;
+        return func(nums,n,prev,0,dp);
     }
 }
