@@ -1,32 +1,27 @@
 class Solution {
     public int minCost(int n, int[] cuts) {
-        List<Integer>cut = new ArrayList<>();
-        cut.add(0);
-        for(int x : cuts){
-            cut.add(x);
-        }
-        cut.add(n);
-        Collections.sort(cut);
-        int[] arr = new int[cut.size()];
-        for(int i=0; i<cut.size(); i++){
-            arr[i] = cut.get(i);
-        }
-        int m = cuts.length;
-        int [][] dp = new int[m+2][m+2];
-        for(int[] rows: dp){
-            Arrays.fill(rows,-1);
-        }
-        return func(arr,1,m,dp);
+        int c = cuts.length;
+        int[]cut =new int[c+2];
+         cut[0]=0;
+         cut[c+1]=n;
+         int[][]dp = new int[c+2][c+2];
+         for(int[]row:dp){
+            Arrays.fill(row,-1);
+         }
+         for(int i=0; i<c; i++){
+            cut[i+1]=cuts[i];
+         }
+         Arrays.sort(cut);
+       return func(1,c,cut,dp);
     }
-    private int func(int[] cuts, int i, int j, int[][] dp){
-        if(i>j) return 0;
-        if(dp[i][j] !=-1) return dp[i][j];
-        int res = Integer.MAX_VALUE;
-        for(int k=i; k<=j; k++){
-            int cost = cuts[j+1]-cuts[i-1];
-            int r = cost+func(cuts,i,k-1,dp)+func(cuts,k+1,j,dp);
-            res = Math.min(res,r);
-        }
-        return dp[i][j]= res;
+   int func(int i,int j, int[]cuts,int[][]dp){
+    if(i>j) return 0;
+    int min = Integer.MAX_VALUE;
+    if(dp[i][j]!=-1) return dp[i][j];
+    for(int idx=i; idx<=j; idx++){
+        int cost = cuts[j+1]-cuts[i-1]+func(i,idx-1,cuts,dp)+func(idx+1,j,cuts,dp);
+        min = Math.min(min,cost);
     }
+    return dp[i][j]= min;
+   }
 }
